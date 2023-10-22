@@ -14,5 +14,6 @@ public interface IUserService {
     User authenticate(LoginRequest loginRequest);
     User uploadPicture(Integer idUser, MultipartFile image) throws IOException;
     User updateUser(Integer idUser, UpdateRequest updateRequest);
+    User getUserById(Integer idUser);
     List<User> getUsersBySubcategories(Integer idUser);
 }

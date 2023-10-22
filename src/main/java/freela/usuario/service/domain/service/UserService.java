@@ -97,6 +97,13 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public User getUserById(Integer idUser) {
+        return this.userRepository.findById(idUser).orElseThrow(
+                () -> new UserNotFoundException("Usuário não encontrado!")
+        );
+    }
+
+    @Override
     public List<User> getUsersBySubcategories(Integer idUser) {
         User userRequest = this.userRepository.findById(idUser).orElseThrow(
                 () -> new UserNotFoundException("Usuário não encontrado!")

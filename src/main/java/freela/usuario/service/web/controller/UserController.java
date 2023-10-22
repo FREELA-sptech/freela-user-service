@@ -38,6 +38,15 @@ public class UserController {
 
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado.")
+    })
+    @GetMapping("/{idUser}")
+    public ResponseEntity<Object> getById(@PathVariable Integer idUser) {
+        return ResponseEntity.ok(userService.getUserById(idUser));
+    }
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
             @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso.")
     })
     @PatchMapping("/{idUser}")
