@@ -7,6 +7,7 @@ import freela.usuario.service.domain.model.entities.UserInterest;
 import freela.usuario.service.domain.model.request.LoginRequest;
 import freela.usuario.service.domain.model.request.RegisterRequest;
 import freela.usuario.service.domain.model.request.UpdateRequest;
+import freela.usuario.service.domain.model.response.UserResponse;
 import freela.usuario.service.domain.service.interfaces.IUserService;
 import freela.usuario.service.infra.repository.UserInterestRepository;
 import freela.usuario.service.infra.repository.UserRepository;
@@ -79,7 +80,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User updateUser(Integer idUser, UpdateRequest updateRequest) {
+    public UserResponse updateUser(Integer idUser, UpdateRequest updateRequest) {
         User user = this.userRepository.findById(idUser).orElseThrow(
                 () -> new UserNotFoundException("Usuário não encontrado!")
         );
@@ -93,25 +94,31 @@ public class UserService implements IUserService {
 
         userRepository.save(user);
 
-        return user;
+        List<SubCategory> subCategories = getSubcategoriesUser(user.getId());
+
+        return new UserResponse(user, subCategories);
     }
 
     @Override
-    public User getUserById(Integer idUser) {
-        return this.userRepository.findById(idUser).orElseThrow(
+    public UserResponse getUserById(Integer idUser) {
+        User user = this.userRepository.findById(idUser).orElseThrow(
                 () -> new UserNotFoundException("Usuário não encontrado!")
         );
+
+        List<SubCategory> subCategories = getSubcategoriesUser(user.getId());
+
+        return new UserResponse(user, subCategories);
     }
 
     @Override
-    public List<User> getUsersBySubcategories(Integer idUser) {
+    public List<UserResponse> getUsersBySubcategories(Integer idUser) {
         User userRequest = this.userRepository.findById(idUser).orElseThrow(
                 () -> new UserNotFoundException("Usuário não encontrado!")
         );;
 
         List<SubCategory> subCategories = this.userInterestService.getAllSubCategoriesByUser(userRequest);
 
-        List<User> users = new ArrayList<>();
+        List<UserResponse> users = new ArrayList<>();
         Set<Integer> addedUserIds = new HashSet<>();
 
         for (SubCategory sub : subCategories) {
@@ -120,12 +127,22 @@ public class UserService implements IUserService {
             for (UserInterest inte : interest) {
                 User user = inte.getUser();
                 if (user.getId() != userRequest.getId() && user.getIsFreelancer() && !addedUserIds.contains(user.getId())) {
-                    users.add(user);
+                    List<SubCategory> subCategoriesUser = getSubcategoriesUser(user.getId());
+                    users.add(new UserResponse(user, subCategoriesUser));
                     addedUserIds.add(user.getId());
                 }
             }
         }
 
         return users;
+    }
+
+    @Override
+    public List<SubCategory> getSubcategoriesUser(Integer idUser) {
+        User userRequest = this.userRepository.findById(idUser).orElseThrow(
+                () -> new UserNotFoundException("Usuário não encontrado!")
+        );
+
+        return this.userInterestService.getAllSubCategoriesByUser(userRequest);
     }
 }

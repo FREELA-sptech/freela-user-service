@@ -4,7 +4,7 @@ package freela.usuario.service.domain.mapper;
 import freela.usuario.service.domain.model.request.RegisterRequest;
 import freela.usuario.service.domain.model.entities.User;
 
-public  class UsuarioMapper {
+public class UsuarioMapper {
     public static User register(RegisterRequest request, String senhaCriptografada) {
         User user = new User();
 
