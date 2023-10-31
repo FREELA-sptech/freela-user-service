@@ -25,4 +25,5 @@ public class    RegisterRequest {
     private String city;
     private String uf;
     private Boolean isFreelancer;
+    private String deviceId;
 }

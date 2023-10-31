@@ -21,7 +21,8 @@ public class UserResponse extends User {
                 user.getUf(),
                 user.getCity(),
                 user.getIsFreelancer(),
-                user.getRate()
+                user.getRate(),
+                user.getDeviceId()
         );
 
         this.subCategories = subCategories;

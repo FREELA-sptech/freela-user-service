@@ -16,6 +16,7 @@ public class UsuarioMapper {
         user.setRate(5.0);
         user.setCity(request.getCity());
         user.setIsFreelancer(request.getIsFreelancer());
+        user.setDeviceId(request.getDeviceId());
 
         return user;
     }

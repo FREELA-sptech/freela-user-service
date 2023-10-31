@@ -89,6 +89,7 @@ public class UserService implements IUserService {
         user.setUf(updateRequest.getUf());
         user.setCity(updateRequest.getCity());
         user.setDescription(updateRequest.getDescription());
+        user.setDeviceId(updateRequest.getDeviceId());
 
         this.userInterestService.updateUserInterest(updateRequest.getSubCategoriesIds(), user);
 
