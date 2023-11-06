@@ -81,4 +81,13 @@ public class UserController {
     public ResponseEntity<Object> getUsersBySubCategories(@PathVariable Integer idUser) {
         return ResponseEntity.ok(this.userService.getUsersBySubcategories(idUser));
     }
+
+    @ApiResponses({
+        @ApiResponse(responseCode = "404", description = "Usuario não encontrado"),
+        @ApiResponse(responseCode = "200", description = "Token FCM atualizado com sucesso")
+    })
+    @PostMapping("/fcm-token/{idUser}")
+    public ResponseEntity<Object> getUsersBySubCategories(@PathVariable Integer idUser, @RequestParam String fcmToken) {
+        return ResponseEntity.ok(this.userService.updateFcmToken(idUser,fcmToken));
+    }
 }
