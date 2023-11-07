@@ -15,8 +15,9 @@ public interface IUserService {
     User register(RegisterRequest registerRequest);
     User authenticate(LoginRequest loginRequest);
     User uploadPicture(Integer idUser, MultipartFile image) throws IOException;
-    UserResponse updateUser(Integer idUser, UpdateRequest updateRequest);
     UserResponse getUserById(Integer idUser);
     List<UserResponse> getUsersBySubcategories(Integer idUser);
     List<SubCategory> getSubcategoriesUser(Integer idUser);
+    UserResponse updateUser(Integer idUser, UpdateRequest updateRequest);
+    User updateFcmToken(Integer idUser,String fcmToken);
 }

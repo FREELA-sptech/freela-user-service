@@ -15,7 +15,7 @@ public class UpdateRequest {
     private String name;
     private String city;
     private String uf;
+    private String deviceId;
     private String description;
     private ArrayList<Integer> subCategoriesIds;
-    private String deviceId;
 }

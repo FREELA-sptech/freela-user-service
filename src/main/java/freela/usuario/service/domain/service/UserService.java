@@ -112,6 +112,19 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public User updateFcmToken(Integer idUser, String fcmToken)  {
+        User user = this.userRepository.findById(idUser).orElseThrow(
+                () -> new UserNotFoundException("Usuário não encontrado!")
+        );
+
+        user.setDeviceId(fcmToken);
+
+        userRepository.save(user);
+
+        return user;
+    }
+
+    @Override
     public List<UserResponse> getUsersBySubcategories(Integer idUser) {
         User userRequest = this.userRepository.findById(idUser).orElseThrow(
                 () -> new UserNotFoundException("Usuário não encontrado!")

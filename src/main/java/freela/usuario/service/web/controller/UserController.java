@@ -93,4 +93,9 @@ public class UserController {
     public ResponseEntity<List<SubCategory>> getSubCategoriesUser(@PathVariable Integer idUser) {
         return ResponseEntity.ok(this.userService.getSubcategoriesUser(idUser));
     }
+
+    @PostMapping("/fcm-token/{idUser}")
+    public ResponseEntity<Object> getUsersBySubCategories(@PathVariable Integer idUser, @RequestParam String fcmToken) {
+        return ResponseEntity.ok(this.userService.updateFcmToken(idUser,fcmToken));
+    }
 }
