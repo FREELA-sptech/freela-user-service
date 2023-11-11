@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 
 @Service
 public class UserService implements IUserService {
@@ -85,19 +86,27 @@ public class UserService implements IUserService {
                 () -> new UserNotFoundException("Usuário não encontrado!")
         );
 
-        user.setName(updateRequest.getName());
-        user.setUf(updateRequest.getUf());
-        user.setCity(updateRequest.getCity());
-        user.setDescription(updateRequest.getDescription());
-        user.setDeviceId(updateRequest.getDeviceId());
+        updateFieldIfNotNull(user::setName, updateRequest.getName());
+        updateFieldIfNotNull(user::setUf, updateRequest.getUf());
+        updateFieldIfNotNull(user::setCity, updateRequest.getCity());
+        updateFieldIfNotNull(user::setDescription, updateRequest.getDescription());
+        updateFieldIfNotNull(user::setDeviceId, updateRequest.getDeviceId());
+        updateFieldIfNotNull(user::setPhoto, updateRequest.getPhoto());
 
-        this.userInterestService.updateUserInterest(updateRequest.getSubCategoriesIds(), user);
+        if (updateRequest.getSubCategoriesIds() != null)
+            this.userInterestService.updateUserInterest(updateRequest.getSubCategoriesIds(), user);
 
         userRepository.save(user);
 
         List<SubCategory> subCategories = getSubcategoriesUser(user.getId());
 
         return new UserResponse(user, subCategories);
+    }
+
+    private <T> void updateFieldIfNotNull(Consumer<T> setter, T value) {
+        if (value != null) {
+            setter.accept(value);
+        }
     }
 
     @Override
